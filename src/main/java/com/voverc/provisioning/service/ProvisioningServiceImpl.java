@@ -3,7 +3,8 @@ package com.voverc.provisioning.service;
 import com.voverc.provisioning.entity.Device;
 import com.voverc.provisioning.repository.DeviceRepository;
 import com.voverc.provisioning.service.collector.DeviceFieldCollector;
-import com.voverc.provisioning.service.print.entity.DeviceField;
+import com.voverc.provisioning.service.collector.entity.DeviceField;
+import com.voverc.provisioning.service.print.DevicePrintResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +19,12 @@ public class ProvisioningServiceImpl implements ProvisioningService {
     @Autowired
     DeviceFieldCollector fieldCollector;
 
+    @Autowired
+    DevicePrintResolver printResolver;
+
     public String getProvisioningFile(String macAddress) {
         Device device = repository.findByMacAddress(macAddress);
         List<DeviceField> deviceFields = fieldCollector.collectFields(device);
-        // TODO Implement provisioning
-        return null;
+        return printResolver.printByModel(deviceFields, device.getModel());
     }
 }

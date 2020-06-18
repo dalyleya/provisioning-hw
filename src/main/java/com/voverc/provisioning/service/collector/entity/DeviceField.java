@@ -1,4 +1,4 @@
-package com.voverc.provisioning.service.print.entity;
+package com.voverc.provisioning.service.collector.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
