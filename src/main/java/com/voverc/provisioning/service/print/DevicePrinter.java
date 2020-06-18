@@ -1,9 +1,7 @@
 package com.voverc.provisioning.service.print;
 
-import com.voverc.provisioning.service.collector.entity.DeviceField;
-
-import java.util.List;
+import java.util.Map;
 
 public interface DevicePrinter {
-    String print(List<DeviceField> deviceFields);
+    String print(Map<String, String> deviceFields);
 }

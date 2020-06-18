@@ -3,12 +3,11 @@ package com.voverc.provisioning.service;
 import com.voverc.provisioning.entity.Device;
 import com.voverc.provisioning.repository.DeviceRepository;
 import com.voverc.provisioning.service.collector.DeviceFieldCollector;
-import com.voverc.provisioning.service.collector.entity.DeviceField;
 import com.voverc.provisioning.service.print.DevicePrintResolver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProvisioningServiceImpl implements ProvisioningService {
@@ -24,7 +23,7 @@ public class ProvisioningServiceImpl implements ProvisioningService {
 
     public String getProvisioningFile(String macAddress) {
         Device device = repository.findByMacAddress(macAddress);
-        List<DeviceField> deviceFields = fieldCollector.collectFields(device);
+        Map<String, String> deviceFields = fieldCollector.collectFields(device);
         return printResolver.printByModel(deviceFields, device.getModel());
     }
 }

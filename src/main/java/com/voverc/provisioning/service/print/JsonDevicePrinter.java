@@ -1,15 +1,14 @@
 package com.voverc.provisioning.service.print;
 
-import com.voverc.provisioning.service.collector.entity.DeviceField;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 
 @Component
 public class JsonDevicePrinter implements DevicePrinter {
     @Override
-    public String print(List<DeviceField> deviceFields) {
-        //TODO
-        return null;
+    public String print(Map<String, String> deviceFields) {
+        return new Gson().toJson(deviceFields);
     }
 }

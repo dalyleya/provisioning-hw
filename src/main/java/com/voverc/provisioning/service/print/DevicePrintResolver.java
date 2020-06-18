@@ -1,11 +1,10 @@
 package com.voverc.provisioning.service.print;
 
 import com.voverc.provisioning.entity.Device;
-import com.voverc.provisioning.service.collector.entity.DeviceField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import java.util.Map;
 
 @Component
 public class DevicePrintResolver {
@@ -15,7 +14,7 @@ public class DevicePrintResolver {
     @Autowired
     PropertyDevicePrinter propertyDevicePrinter;
 
-    public String printByModel(List<DeviceField> deviceFields, Device.DeviceModel model){
+    public String printByModel(Map<String, String> deviceFields, Device.DeviceModel model){
         String result;
         switch (model){
             case DESK:
