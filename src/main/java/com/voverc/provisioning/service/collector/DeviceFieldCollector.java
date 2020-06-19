@@ -2,21 +2,18 @@ package com.voverc.provisioning.service.collector;
 
 import com.voverc.provisioning.entity.Device;
 import com.voverc.provisioning.service.parser.FragmentParseResolver;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.*;
 
+@Data
 @Component
 @PropertySource("classpath:application.properties")
 public class DeviceFieldCollector {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceFieldCollector.class);
 
     @Autowired
     private Environment env;
@@ -27,16 +24,13 @@ public class DeviceFieldCollector {
     public Map<String, String> collectFields(Device device) {
 
         Map<String, String> fields = getDatabaseFields(device);
-        try {
-            fields.putAll(parseResolver.parseByModel(
-                    device.getOverrideFragment(), device.getModel()));
-        } catch (IOException e) {
-            LOGGER.warn("Something is wrong with override fragment : {}", device.getOverrideFragment());
-            e.printStackTrace();
-        }
-        for (Map.Entry<String, String> e : getEnvironmentProperties().entrySet()) {
-            fields.putIfAbsent(e.getKey(), e.getValue());
-        }
+
+            Map<String, String> overrideFragmentMap = parseResolver.parseByModel(
+                    device.getOverrideFragment(), device.getModel());
+            getEnvironmentProperties().entrySet().stream()
+                    .filter(e -> !overrideFragmentMap.containsKey(e.getKey()))
+                    .forEach(e -> fields.put(e.getKey(), e.getValue()));
+            fields.putAll(overrideFragmentMap);
         return fields;
     }
 

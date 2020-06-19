@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +14,7 @@ public class FragmentParseResolver {
     @Autowired
     JsonFragmentParser jsonParser;
 
-    @Autowired
-    PropertyFragmentParser propertyParser;
-
-    public Map<String, String> parseByModel(String fragment, Device.DeviceModel model) throws IOException {
+    public Map<String, String> parseByModel(String fragment, Device.DeviceModel model) {
         Map<String, String> result = new HashMap<>();
         if (StringUtils.isNotBlank(fragment)) {
             switch (model) {
@@ -34,4 +30,7 @@ public class FragmentParseResolver {
         }
         return result;
     }
+
+    @Autowired
+    PropertyFragmentParser propertyParser;
 }
