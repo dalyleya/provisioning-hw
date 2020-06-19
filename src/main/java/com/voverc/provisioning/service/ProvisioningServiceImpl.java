@@ -23,6 +23,7 @@ public class ProvisioningServiceImpl implements ProvisioningService {
 
     public String getProvisioningFile(String macAddress) {
         Device device = repository.findByMacAddress(macAddress);
+        if (device == null) return null;
         Map<String, String> deviceFields = fieldCollector.collectFields(device);
         return printResolver.printByModel(deviceFields, device.getModel());
     }

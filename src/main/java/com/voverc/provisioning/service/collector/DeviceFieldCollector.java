@@ -2,6 +2,8 @@ package com.voverc.provisioning.service.collector;
 
 import com.voverc.provisioning.entity.Device;
 import com.voverc.provisioning.service.parser.FragmentParseResolver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -13,6 +15,8 @@ import java.util.*;
 @Component
 @PropertySource("classpath:application.properties")
 public class DeviceFieldCollector {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DeviceFieldCollector.class);
 
     @Autowired
     private Environment env;
@@ -27,7 +31,7 @@ public class DeviceFieldCollector {
             fields.putAll(parseResolver.parseByModel(
                     device.getOverrideFragment(), device.getModel()));
         } catch (IOException e) {
-            //TODO Log wrong override fragment text
+            LOGGER.warn("Something is wrong with override fragment : {}", device.getOverrideFragment());
             e.printStackTrace();
         }
         for (Map.Entry<String, String> e : getEnvironmentProperties().entrySet()) {
